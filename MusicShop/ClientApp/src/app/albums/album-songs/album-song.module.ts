@@ -1,26 +1,22 @@
 import { NgModule } from "@angular/core";
-import { AlbumComponent } from "./album.component";
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { AlbumFormModule } from "./album-form/album-form.module";
 import { CommonModule } from "@angular/common";
 import { MatDialogModule } from "@angular/material/dialog";
-import { SongModule } from "./album-songs/album-song.module";
+import { SongComponent } from "./album-song.component";
 
 @NgModule({
     declarations: [
-        AlbumComponent
+        SongComponent
     ],
     imports: [
       CommonModule,
       HttpClientModule,
       ReactiveFormsModule,
       FormsModule,
-      AlbumFormModule,
-      MatDialogModule,
-      SongModule
+      MatDialogModule
     ],
-    exports: [AlbumComponent],
+    exports: [SongComponent],
     providers: []
 })
-export class AlbumModule { }
+export class SongModule { }

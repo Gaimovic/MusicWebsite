@@ -26,14 +26,6 @@ export class ConcertFormComponent implements OnInit {
     return (<FormControl>this.form.get('concertStartDate'));
   }
 
-  addConcert() {
-    //(<FormArray> this.form.get('songs')).controls.push(new FormControl(null, { validators: Validators.required, updateOn: 'blur'}));
-  }
-
-  removeConcert(index: any) {
-  //  (<FormArray> this.form.get('songs')).removeAt(index);
-  }
-
   createConcert() {
     var request = this.form.getRawValue();
     if(this.form.valid) {

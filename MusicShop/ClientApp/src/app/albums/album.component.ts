@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MusicShopService } from '../shared/services/music-shop.service';
-import { AlbumFormComponent } from './album-form/album-form.component';
+import { MatDialog } from '@angular/material/dialog';
+import { SongComponent } from './album-songs/album-song.component';
 
 @Component({
   selector: 'albums',
@@ -12,7 +13,8 @@ export class AlbumComponent implements OnInit {
   public albums: any = [];
   
   constructor(
-    public musicShopService: MusicShopService
+    public musicShopService: MusicShopService,
+    public dialog: MatDialog
     ) {}
 
   public ngOnInit(): void {
@@ -33,5 +35,10 @@ export class AlbumComponent implements OnInit {
 
   refreshAlbum(event: any) {
     this.getAlbums();
+  }
+
+  openDialog(album: any) {
+    if(album.songs[0] !== null)
+        this.dialog.open(SongComponent, { data: { songs: album.songs }});
   }
 }

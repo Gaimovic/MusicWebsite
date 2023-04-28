@@ -24,7 +24,7 @@ export class ConcertComponent implements OnInit {
   public getConcerts() {
     this.musicShopService.getConcerts()
     .subscribe({
-        next: response => { this.concerts = response; console.log(response)},
+        next: response => { this.concerts = response;},
         error: error => console.log(error)
     });
   }

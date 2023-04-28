@@ -7,8 +7,6 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AlbumComponent } from './albums/album.component';
 import { AlbumFormComponent } from './albums/album-form/album-form.component';
 import { AlbumFormModule } from './albums/album-form/album-form.module';
@@ -26,9 +24,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    CounterComponent,
-    FetchDataComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -44,8 +40,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
       { path: 'concerts', component: ConcertComponent },
       { path: 'albums', component: AlbumComponent },
       { path: 'create-album', component: AlbumFormComponent },

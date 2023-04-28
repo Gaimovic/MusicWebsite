@@ -1,9 +1,12 @@
-﻿using MusicShop.Domain.Classifires;
+﻿using FluentValidation;
+using MusicShop.Domain.Classifires;
 using MusicShop.Domain.Models;
 using MusicShop.Domain.Models.Albums;
 using MusicShop.Domain.Models.Concerts;
 using MusicShop.Domain.Models.Requests;
+using MusicShop.Features.Validators;
 using MusicShop.Infrastructure.Repositories;
+using System.ComponentModel.DataAnnotations;
 
 namespace MusicShop.Features.UseCases
 {
@@ -50,7 +53,10 @@ namespace MusicShop.Features.UseCases
 
         public async Task<Guid> CreateAlbum(CreateAlbumRequest request)
         {
-            // Get default portfolio
+            //Validate request
+            var validator = new CreateAlbumRequestValidator();
+            await validator.ValidateAndThrowAsync(request);
+
             var portfolio = await _musicShopRepository.GetPortfolio("MyTestPortfolio1");
             // Check for author
             var author = await _musicShopRepository.GetAuthor(request.Author);
@@ -101,6 +107,9 @@ namespace MusicShop.Features.UseCases
 
         public async Task<Guid> AddConcert(AddConcertRequest request)
         {
+            var validator = new AddConcertRquestValidator();
+            await validator.ValidateAndThrowAsync(request);
+
             var author = await _musicShopRepository.GetAuthorByNameEmail(request.Author, request.Email);
             var concert = new Concert()
             {
@@ -133,7 +142,7 @@ namespace MusicShop.Features.UseCases
                 var portfolioId = await _musicShopRepository.AddNewPortfolio(new Portfolio() { PortfolioName = "MyTestPortfolio1", UserId = userId });
 
                 // Create author 
-                var author = await _musicShopRepository.CreateAuthor("Windu", "ilja.gaimovic@gmail.com");
+                var author = await _musicShopRepository.CreateAuthor("TestAuthor", "testemail@gmail.com");
 
                 // Add Genres
                 await _musicShopRepository.AddNewGenre(new Genre() { GenreCode = GenresCodes.Pop, GenreName = "Pop" });
@@ -148,14 +157,14 @@ namespace MusicShop.Features.UseCases
                     PortfolioId = portfolioId, 
                     Description = "My new test portfolio", 
                     AuthorId = author.AuthorId, 
-                    Title = "MaimM",
+                    Title = "Test Title",
                     CoverId = cover.CoverGuid,
                     GenreCode = genre.GenreCode
                 });
 
                 // Add Songs
-                await _musicShopRepository.AddNewSong(new Song() { SongName = "Time to dance", AlbumId = albumId });
-                await _musicShopRepository.AddNewSong(new Song() { SongName = "Flower field", AlbumId = albumId });
+                await _musicShopRepository.AddNewSong(new Song() { SongName = "Two test songs", AlbumId = albumId });
+                await _musicShopRepository.AddNewSong(new Song() { SongName = "Test question", AlbumId = albumId });
 
                 return userId;
             }
