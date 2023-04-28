@@ -1,0 +1,128 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <form [formGroup]="form"
+                   #localForm="ngForm" >
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-author" class="form-label">Author: </label>
+                        <input 
+                            id="form-author"
+                            class="form-control"
+                            [class.is-invalid]="form.get('author')?.invalid"
+                            type="text" 
+                            formControlName="author"
+                        >
+                        <div class="invalid-feedback">
+                            Author is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-tirle" class="form-label">Title: </label>
+                        <input 
+                            id="form-tirle" 
+                            type="text" 
+                            formControlName="title"
+                            class="form-control"
+                            [class.is-invalid]="form.get('title')?.invalid"
+                            >
+                         <div class="invalid-feedback">
+                                Title is required
+                         </div>             
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-description"
+                            class="form-label">Description: </label>
+                        <input 
+                            id="form-description" 
+                            type="text" 
+                            formControlName="description"
+                            class="form-control"
+                            [class.is-invalid]="form.get('description')?.invalid"
+                            >
+        
+                        <div class="invalid-feedback">
+                                Title is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-cover" class="form-label">CoverUrl: </label>
+                        <input 
+                            id="form-cover" 
+                            type="text" 
+                            formControlName="coverUrl"
+                            class="form-control"
+                            [class.is-invalid]="form.get('coverUrl')?.invalid"
+                            >
+        
+                        <div class="invalid-feedback">
+                                Url is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-cover" class="form-label">Genre: </label>
+                        <select 
+                            id="genre" 
+                            formControlName="genreCode"
+                            class="form-control">
+                            <option *ngFor="let genre of genres" [ngValue]="genre.code">
+                                {{ genre.description }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-cover" class="form-label">Music Band Name: </label>
+                        <input 
+                            id="form-cover" 
+                            type="text" 
+                            formControlName="musicBandName"
+                            class="form-control"
+                            [class.is-invalid]="form.get('musicBandName')?.invalid"
+                            >
+                        <div class="invalid-feedback">
+                            Music band name is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div formArrayName="songs">
+                        <div class="mb-3">
+                            <label for="form-songs" class="form-label">Songs: </label>
+                            <div *ngFor="let song of getSongControls; let i = index">
+                                <input 
+                                    id="form-song" 
+                                    type="text" 
+                                    [formControlName]="i"
+                                    class="form-control"
+                                    [class.is-invalid]="song.get(i.toString())?.invalid"
+                                    >
+                                    <div class="invalid-feedback">
+                                        Song name is required
+                                    </div>
+                                <button type="button" class="btn btn-primary" (click)="removeSong(i)">Remove</button>
+                            </div>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary" (click)="addSong()">Add Song</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!form.valid" (click)="createAlbum()">Add New Album</button>
+</div>

@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="row">
+        <div class="col-3" *ngFor="let album of albums" >
+            <div class="card" style="width: 18rem;">
+                <img [src]="album.cover.url" class="card-img-top">
+                <div class="card-body">
+                  <h5 class="card-title">{{ album.title }}</h5>
+                  <p class="card-text">{{ album.description }}</p>
+                  <button type="button" class="btn btn-dark" (click)="removeAlbum(album.albumId)">
+                    Remove
+                  </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Create new album
+          </button>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="modalLabel">Create new album</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <album-create-form (refresh)="refreshAlbum($event)"></album-create-form>
+    </div>
+  </div>
+</div>
