@@ -4,8 +4,12 @@
             <div class="card" style="width: 18rem;">
                 <img [src]="album.cover.url" class="card-img-top">
                 <div class="card-body">
-                  <h5 class="card-title">{{ album.title }}</h5>
-                  <p class="card-text">{{ album.description }}</p>
+                  <h4 class="card-title">{{ album.title }}</h4>
+                  <h5><a href="mailto:{{album.author.email}}">({{ album.author.email }})</a></h5>
+                  <p class="card-text album-card-text">
+                    {{ album.description }}
+                  </p>
+                  
                   <button type="button" class="btn btn-dark" (click)="removeAlbum(album.albumId)">
                     Remove
                   </button>
@@ -15,12 +19,11 @@
     </div>
     <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button" class="btn btn-dark form-btn-style" data-bs-toggle="modal" data-bs-target="#exampleModal">
             Create new album
           </button>
         </div>
-    </div>
-    
+    </div> 
 </div>
 
 <!-- Modal -->

@@ -11,7 +11,7 @@ using MusicShop.Infrastructure.Database;
 namespace MusicShop.Infrastructure.Migrations
 {
     [DbContext(typeof(MusicShopContext))]
-    [Migration("20230428053923_InitialState")]
+    [Migration("20230428095556_InitialState")]
     partial class InitialState
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ namespace MusicShop.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("MusicBandName")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

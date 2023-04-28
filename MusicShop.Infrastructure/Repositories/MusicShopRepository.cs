@@ -16,6 +16,7 @@ namespace MusicShop.Infrastructure.Repositories
         Task<Genre> GetGenre(string genreCode);
         Task<User> GetUserByNameAndSurname(string userName, string userSurname);
         Task<Portfolio> GetPortfolio(string portfolioName);
+        Task<Author> GetAuthorByNameEmail(string name, string email);
         Task<Author> GetAuthorById(Guid authorId);
         Task<Author> GetAuthor(string authorName);
         Task<IEnumerable<Album>> GetAlbums();
@@ -24,7 +25,7 @@ namespace MusicShop.Infrastructure.Repositories
         Task<IEnumerable<Concert>> GetAllConcerts();
 
         Task<Guid> AddNewUser(string userName, string userSurname);
-        Task<Author> AddNewAuthor(string authorName, string musicBandName);
+        Task<Author> CreateAuthor(string authorName, string email);
         Task<Guid> AddNewPortfolio(Portfolio portfolio);
         Task<Genre> AddNewGenre(Genre genre);
         Task<Guid> AddNewSong(Song song);
@@ -76,12 +77,22 @@ namespace MusicShop.Infrastructure.Repositories
             return _mapper.Map<Author>(author);
         }
 
+        public async Task<Author> GetAuthorByNameEmail(string name, string email)
+        {
+            var author = await _musicShopContext
+                .Authors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.AuthorName == name && x.Email == email);
+            return _mapper.Map<Author>(author);
+        }
+
         public async Task<IEnumerable<Album>> GetAlbums()
         {
             var albums = await _musicShopContext
                 .Albums
                 .Include(x => x.Songs)
                 .Include(x => x.Cover)
+                .Include(x => x.Author)
                 .AsNoTracking()
                 .ToListAsync();
 
@@ -93,6 +104,7 @@ namespace MusicShop.Infrastructure.Repositories
         {
             var albums = await _musicShopContext
                 .Concerts
+                .Include(x => x.Author)
                 .AsNoTracking()
                 .Where(x => x.AuthorId == authorId)
                 .ToListAsync();
@@ -105,8 +117,9 @@ namespace MusicShop.Infrastructure.Repositories
         {
             var albums = await _musicShopContext
                 .Concerts
+                .Include(x => x.Author)
                 .AsNoTracking()
-                .OrderBy(x => x.ConcertStartDate)
+                .OrderByDescending(x => x.ConcertStartDate)
                 .ToListAsync();
 
             return albums
@@ -154,9 +167,17 @@ namespace MusicShop.Infrastructure.Repositories
             return user.UserId;
         }
 
-        public async Task<Author> AddNewAuthor(string authorName, string musicBandName)
+        public async Task<Author> CreateAuthor(string authorName, string email)
         {
-            var author = AddAuthor(authorName, musicBandName);
+            var author = await _musicShopContext
+                .Authors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.AuthorName == authorName && x.Email == email);
+
+            if (author != null)
+                return _mapper.Map<Author>(author);
+
+            author = new AuthorEntity() { AuthorName = authorName, Email = email }; ;
             await _musicShopContext.AddAsync(author);
 
             await _musicShopContext.SaveChangesAsync();
@@ -271,11 +292,6 @@ namespace MusicShop.Infrastructure.Repositories
         private UserEntity AddUser(string name, string surname)
         {
             return new UserEntity() { Name = name, Surname = surname };
-        }
-
-        private AuthorEntity AddAuthor(string name, string musicBandName)
-        {
-            return new AuthorEntity() { AuthorName = name, MusicBandName = musicBandName };
         }
     }
 }

@@ -8,6 +8,6 @@
 
         public string MusicBandName { get; set; }
 
-        public List<Album> Albums { get; set; } = new List<Album>();
+        public string Email { get; set; }
     }
 }

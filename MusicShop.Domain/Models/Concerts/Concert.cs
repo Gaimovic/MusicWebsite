@@ -1,4 +1,6 @@
-﻿namespace MusicShop.Domain.Models.Concerts
+﻿using MusicShop.Domain.Models.Albums;
+
+namespace MusicShop.Domain.Models.Concerts
 {
     public class Concert
     {
@@ -13,5 +15,6 @@
         public DateTime ConcertEndDate { get; set; }
 
         public Guid AuthorId { get; set; }
+        public Author Author { get; set; }
     }
 }

@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row" *ngFor="let concert of concerts">
+        <div class="card">
+            <div class="card-header">
+                {{ concert.concertTitle }} from {{ concert.concertStartDate }} - {{ concert.concertEndDate }}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ concert.author.authorName }} <a href="mailto:{{concert.author.email}}">({{ concert.author.email }})</a></h5>
+              <p class="card-text ">{{ concert.concertDescription }}</p>
+             
+            </div>
+            <div class="card-footer text-muted">
+                <a class="btn btn-secondary" (click)="removeConcert(concert.concertId)">Remove</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-dark form-btn-style" (click)="openDialog()">
+            Schedule concert
+          </button>
+        </div>
+    </div> 
+</div>

@@ -55,7 +55,7 @@ namespace MusicShop.Features.UseCases
             // Check for author
             var author = await _musicShopRepository.GetAuthor(request.Author);
             if (author == null)
-                author = await _musicShopRepository.AddNewAuthor(request.Author, request.MusicBandName);
+                author = await _musicShopRepository.CreateAuthor(request.Author, request.Email);
 
             var cover = await _musicShopRepository.AddNewCover(new Cover() { Url = request.CoverUrl });
 
@@ -101,9 +101,10 @@ namespace MusicShop.Features.UseCases
 
         public async Task<Guid> AddConcert(AddConcertRequest request)
         {
+            var author = await _musicShopRepository.GetAuthorByNameEmail(request.Author, request.Email);
             var concert = new Concert()
             {
-                AuthorId = request.AuthorId,
+                AuthorId = author.AuthorId,
                 ConcertStartDate = request.ConcertStartDate,
                 ConcertEndDate = request.ConcertEndDate,
                 ConcertTitle = request.ConcertTitle,
@@ -132,7 +133,7 @@ namespace MusicShop.Features.UseCases
                 var portfolioId = await _musicShopRepository.AddNewPortfolio(new Portfolio() { PortfolioName = "MyTestPortfolio1", UserId = userId });
 
                 // Create author 
-                var author = await _musicShopRepository.AddNewAuthor("Windu", "Savage of the space");
+                var author = await _musicShopRepository.CreateAuthor("Windu", "ilja.gaimovic@gmail.com");
 
                 // Add Genres
                 await _musicShopRepository.AddNewGenre(new Genre() { GenreCode = GenresCodes.Pop, GenreName = "Pop" });

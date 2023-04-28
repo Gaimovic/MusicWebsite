@@ -14,8 +14,7 @@ namespace MusicShop.Infrastructure.MappingProfiles
         {
             CreateMap<AlbumEntity, Album>()
                 .ReverseMap()
-                .ForMember(dest => dest.Portfolio, opt => opt.Ignore())
-                .ForMember(dest => dest.Author, opt => opt.Ignore());
+                .ForMember(dest => dest.Portfolio, opt => opt.Ignore());
 
             CreateMap<GenreEntity, Genre>()
                 .ReverseMap();
@@ -35,8 +34,7 @@ namespace MusicShop.Infrastructure.MappingProfiles
                 .ReverseMap();
 
             CreateMap<ConcertEntity, Concert>()
-                .ReverseMap()
-                .ForMember(dest => dest.Author, opt => opt.Ignore());
+                .ReverseMap();
 
             CreateMap<CoverEntity, Cover>()
                 .ReverseMap();

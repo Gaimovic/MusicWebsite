@@ -1,6 +1,11 @@
 <body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container main-body-container">
-    <router-outlet></router-outlet>
+  <div class="video-main">
+    <video id="myVideo" [autoplay]="true" [loop]="true" [muted]="true" playsInline>
+      <source src="../assets/video/mainpagevideo.mp4" type="video/mp4">
+    </video>
+    <app-nav-menu></app-nav-menu>
+    <div class="container main-body-container">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </body>

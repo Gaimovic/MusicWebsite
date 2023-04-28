@@ -32,7 +32,6 @@ export class AlbumComponent implements OnInit {
   }
 
   refreshAlbum(event: any) {
-    console.log("called");
     this.getAlbums();
   }
 }

@@ -1,0 +1,90 @@
+<div class="modal-body">
+    <div class="row">
+        <div class="col">
+            <form [formGroup]="form"
+                   #localForm="ngForm" >
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-author" class="form-label">Author (Music Group): </label>
+                        <input 
+                            id="form-author"
+                            class="form-control"
+                            [class.is-invalid]="form.get('author')?.invalid"
+                            type="text" 
+                            formControlName="author"
+                        >
+                        <div class="invalid-feedback">
+                            Author (Music Group) is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-tirle" class="form-label">Title: </label>
+                        <input 
+                            id="form-tirle" 
+                            type="text" 
+                            formControlName="concertTitle"
+                            class="form-control"
+                            [class.is-invalid]="form.get('concertTitle')?.invalid"
+                            >
+                         <div class="invalid-feedback">
+                                Title is required
+                         </div>             
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-description"
+                            class="form-label">Description: </label>
+                        <input 
+                            id="form-description" 
+                            type="text" 
+                            formControlName="concertDescription"
+                            class="form-control"
+                            [class.is-invalid]="form.get('concertDescription')?.invalid"
+                            >
+        
+                        <div class="invalid-feedback">
+                                Description is required
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <mat-form-field appearance="fill">
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [formGroup]="form" [rangePicker]="picker">
+                              <input matStartDate formControlName="concertStartDate" placeholder="Start date">
+                              <input matEndDate formControlName="concertEndDate" placeholder="End date">
+                            </mat-date-range-input>
+                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
+                          </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="mb-3">
+                        <label for="form-cover" class="form-label">Email: </label>
+                        <input 
+                            id="form-cover" 
+                            type="text" 
+                            formControlName="email"
+                            class="form-control"
+                            [class.is-invalid]="form.get('email')?.invalid"
+                            >
+                        <div class="invalid-feedback">
+                            Email is required
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button class="btn btn-secondary" mat-dialog-close>Cancel</button>
+    <button mat-button class="btn btn-primary" [mat-dialog-close]="true" [disabled]="!form.valid" (click)="createConcert()" cdkFocusInitial>Schedule Concert</button>
+</mat-dialog-actions>

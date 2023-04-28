@@ -28,13 +28,26 @@ export interface Song {
 export class AlbumForm extends FormGroup {
     constructor() {
         super({
-            author: new FormControl(null,  { validators: Validators.required, updateOn: 'blur'}),
-            title: new FormControl(null, { validators: Validators.required, updateOn: 'blur'}),
-            description: new FormControl(null, { validators: Validators.required, updateOn: 'blur'}),
-            coverUrl: new FormControl(null, { validators: Validators.required, updateOn: 'blur'}),
-            genreCode: new FormControl(Genres.HeavyMetal, { validators: Validators.required, updateOn: 'blur'}),
-            musicBandName: new FormControl(null, { validators: Validators.required, updateOn: 'blur'}),
+            author: new FormControl(null,  { validators: Validators.required, updateOn: 'change'}),
+            title: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            description: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            coverUrl: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            genreCode: new FormControl(Genres.HeavyMetal, { validators: [Validators.required, Validators.maxLength(20)], updateOn: 'change'}),
+            email: new FormControl(null, { validators:  [Validators.required, Validators.email], updateOn: 'change'}),
             songs: new FormArray([])
+        })
+    }
+}
+
+export class ConcertForm extends FormGroup {
+    constructor() {
+        super({
+            author: new FormControl(null,  { validators: Validators.required, updateOn: 'change'}),
+            concertStartDate: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            concertEndDate: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            concertTitle: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            concertDescription: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            email: new FormControl(null, { validators: [Validators.required, Validators.email], updateOn: 'change'}),
         })
     }
 }

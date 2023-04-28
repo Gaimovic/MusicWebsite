@@ -57,7 +57,8 @@ namespace MusicShop.Controllers
         [Produces(MediaTypeNames.Application.Json)]
         public async Task<List<Concert>> GetConcert()
         {
-            return await _musicShopUseCase.GetConcerts();
+            var test = await _musicShopUseCase.GetConcerts();
+            return test;
         }
 
         [HttpPost]

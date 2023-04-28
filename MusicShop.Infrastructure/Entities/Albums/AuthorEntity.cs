@@ -13,10 +13,7 @@ namespace MusicShop.Infrastructure.Entities.Albums
         [Required]
         public string AuthorName { get; set; }
 
-        [Required]
-        public string MusicBandName { get; set; }
-
-        public List<AlbumEntity> Albums { get; set; } = new List<AlbumEntity>();
+        public string Email { get; set; }
 
         public List<ConcertEntity> Concerts { get; set; } = new List<ConcertEntity>();
     }

@@ -5,7 +5,7 @@
                    #localForm="ngForm" >
                 <div class="row">
                     <div class="mb-3">
-                        <label for="form-author" class="form-label">Author: </label>
+                        <label for="form-author" class="form-label"> Author (Music Group): </label>
                         <input 
                             id="form-author"
                             class="form-control"
@@ -14,7 +14,7 @@
                             formControlName="author"
                         >
                         <div class="invalid-feedback">
-                            Author is required
+                            Author (Music Group) is required
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             >
         
                         <div class="invalid-feedback">
-                                Title is required
+                                Description is required
                         </div>
                     </div>
                 </div>
@@ -81,16 +81,16 @@
                 </div>
                 <div class="row">
                     <div class="mb-3">
-                        <label for="form-cover" class="form-label">Music Band Name: </label>
+                        <label for="form-cover" class="form-label">Email: </label>
                         <input 
                             id="form-cover" 
                             type="text" 
-                            formControlName="musicBandName"
+                            formControlName="email"
                             class="form-control"
-                            [class.is-invalid]="form.get('musicBandName')?.invalid"
+                            [class.is-invalid]="form.get('email')?.invalid"
                             >
                         <div class="invalid-feedback">
-                            Music band name is required
+                            Email is required
                         </div>
                     </div>
                 </div>

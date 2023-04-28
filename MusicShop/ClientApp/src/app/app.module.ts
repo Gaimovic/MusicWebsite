@@ -14,6 +14,11 @@ import { AlbumFormComponent } from './albums/album-form/album-form.component';
 import { AlbumFormModule } from './albums/album-form/album-form.module';
 import { AlbumModule } from './albums/album.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ConcertComponent } from './concerts/concert.component';
+import { ConcertFormModule } from './concerts/concert-form/concert-form.module';
+import { ConcertModule } from './concerts/concert.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+
 
 // import { MatDialogModule } from '@angular/m'
 
@@ -32,11 +37,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     AlbumFormModule,
     AlbumModule,
+    ConcertFormModule,
+    ConcertModule,
+    MatDatepickerModule,
+    BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
+      { path: 'concerts', component: ConcertComponent },
       { path: 'albums', component: AlbumComponent },
       { path: 'create-album', component: AlbumFormComponent },
     ])

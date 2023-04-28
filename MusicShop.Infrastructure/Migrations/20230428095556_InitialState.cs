@@ -15,7 +15,7 @@ namespace MusicShop.Infrastructure.Migrations
                 {
                     AuthorId = table.Column<Guid>(type: "TEXT", nullable: false),
                     AuthorName = table.Column<string>(type: "TEXT", nullable: false),
-                    MusicBandName = table.Column<string>(type: "TEXT", nullable: false)
+                    Email = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
