@@ -1,4 +1,5 @@
-import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormArray, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 
 export enum Genres {
     HeavyMetal = 'HM',
@@ -25,18 +26,36 @@ export interface Song {
     name: string;
 }
 
+export  function urlValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+        let validUrl = true;
+
+        try {
+          new URL(control.value)
+        } catch {
+          validUrl = false;
+        }
+    
+        return validUrl ? null : { errorMsg: "Url dormat error" };
+    }
+}
+
 export class AlbumForm extends FormGroup {
     constructor() {
         super({
             author: new FormControl(null,  { validators: Validators.required, updateOn: 'change'}),
             title: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
             description: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
-            coverUrl: new FormControl(null, { validators: Validators.required, updateOn: 'change'}),
+            coverUrl: new FormControl(null, { validators:  [urlValidator()], updateOn: 'change'}),
             genreCode: new FormControl(Genres.HeavyMetal, { validators: [Validators.required, Validators.maxLength(20)], updateOn: 'change'}),
             email: new FormControl(null, { validators:  [Validators.required, Validators.email], updateOn: 'change'}),
             songs: new FormArray([])
         })
+
+       // this.controls.coverUrl.setValidators([Validators.required, this.urlValidator])
     }
+
+
 }
 
 export class ConcertForm extends FormGroup {
@@ -51,4 +70,5 @@ export class ConcertForm extends FormGroup {
         })
     }
 }
+
 

@@ -104,7 +104,7 @@
                                     type="text" 
                                     [formControlName]="i"
                                     class="form-control"
-                                    [class.is-invalid]="song.get(i.toString())?.invalid"
+                                    [class.is-invalid]="song?.invalid"
                                     >
                                     <div class="invalid-feedback">
                                         Song name is required
@@ -124,5 +124,5 @@
 
 <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!form.valid" (click)="createAlbum()">Add New Album</button>
+    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" [disabled]="!form.valid" (click)="createAlbum()">Add New Album</button>
 </div>

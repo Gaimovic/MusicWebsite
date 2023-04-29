@@ -30,7 +30,9 @@ export class AlbumFormComponent implements OnInit {
   }
 
   addSong() {
-    (<FormArray> this.form.get('songs')).controls.push(new FormControl(null, { validators: Validators.required, updateOn: 'blur'}));
+    var controls = <FormArray> this.form.get('songs');
+    controls.push(new FormControl(null, { validators: Validators.required, updateOn: 'blur'}));
+    controls.updateValueAndValidity();
   }
 
   removeSong(index: any) {
