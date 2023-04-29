@@ -9,7 +9,7 @@
                         <input 
                             id="form-author"
                             class="form-control"
-                            [class.is-invalid]="form.get('author')?.invalid"
+                            [class.is-invalid]="form.get('author')?.invalid && formWasSubmited"
                             type="text" 
                             formControlName="author"
                         >
@@ -26,7 +26,7 @@
                             type="text" 
                             formControlName="concertTitle"
                             class="form-control"
-                            [class.is-invalid]="form.get('concertTitle')?.invalid"
+                            [class.is-invalid]="form.get('concertTitle')?.invalid && formWasSubmited"
                             >
                          <div class="invalid-feedback">
                                 Title is required
@@ -42,7 +42,7 @@
                             type="textarea" 
                             formControlName="concertDescription"
                             class="form-control"
-                            [class.is-invalid]="form.get('concertDescription')?.invalid"
+                            [class.is-invalid]="form.get('concertDescription')?.invalid && formWasSubmited"
                             ></textarea>
         
                         <div class="invalid-feedback">
@@ -72,7 +72,7 @@
                             type="text" 
                             formControlName="email"
                             class="form-control"
-                            [class.is-invalid]="form.get('email')?.invalid"
+                            [class.is-invalid]="form.get('email')?.invalid && formWasSubmited"
                             >
                         <div class="invalid-feedback">
                             Email is required
@@ -86,5 +86,5 @@
 
 <mat-dialog-actions align="end">
     <button mat-button class="btn btn-secondary" mat-dialog-close>Cancel</button>
-    <button mat-button class="btn btn-warning" [mat-dialog-close]="true" [disabled]="!form.valid" (click)="createConcert()" cdkFocusInitial>Schedule Concert</button>
+    <button mat-button class="btn btn-warning" (click)="createConcert()" cdkFocusInitial>Schedule Concert</button>
 </mat-dialog-actions>

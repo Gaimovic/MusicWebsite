@@ -1,39 +1,54 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, Inject, OnInit, Output } from '@angular/core';
 import { MusicShopService } from '../../shared/services/music-shop.service'
 import { AlbumForm, ConcertForm } from 'src/app/models/album.model';
 import { FormControl } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'concert-create-form',
   templateUrl: './concert-form.component.html',
   styleUrls: ['./concert-form.component.scss']
 })
-export class ConcertFormComponent implements OnInit {
-  @Output() public refresh = new EventEmitter<boolean>();
+export class ConcertFormComponent {
+  @Output() public refresh = new EventEmitter<Observable<any>>();
   public form: AlbumForm;
+  public concerts$: Observable<any> | undefined;
+  public formWasSubmited: boolean = false;
 
   constructor(
-    public musicShopService: MusicShopService
+    @Inject(MAT_DIALOG_DATA) public data: string,
+    private dialogRef: MatDialogRef<ConcertFormComponent>,
+    public musicShopService: MusicShopService,
     ) {
         this.form = new ConcertForm();
     }
-
-  public ngOnInit(): void {
-  }
 
   get getStartDateControl() {
     return (<FormControl>this.form.get('concertStartDate'));
   }
 
-  createConcert() {
-    var request = this.form.getRawValue();
+  async createConcert() {
+    this.formWasSubmited = true;
     if(this.form.valid) {
+      await new Promise<void>((resolve, reject) => {
+        var request = this.form.getRawValue();
         this.musicShopService.addNewConcert(request)
-        .subscribe({
-            next: response => this.refresh.emit(true),
-            error: error => console.log(error)
-        });
+          .toPromise()
+          .then(
+            res => { 
+             // Success
+             this.dialogRef.close({ data: this.musicShopService.getConcerts()})
+             this.formWasSubmited = false;
+             resolve();
+            }, (msg) => { 
+             // Error
+             reject(msg);
+            }
+          );
+      });
     }
-  }
+   }
+  
 }

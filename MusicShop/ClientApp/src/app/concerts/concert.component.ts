@@ -1,47 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { MusicShopService } from '../shared/services/music-shop.service';
-import {MatDialog} from '@angular/material/dialog';
 import { ConcertFormComponent } from './concert-form/concert-form.component';
+import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'concerts',
   templateUrl: './concert.component.html',
   styleUrls: ['./concert.component.scss']
 })
-export class ConcertComponent implements OnInit {
+export class ConcertComponent {
 
-  public concerts: any = [];
+  public concerts$: Observable<any> | undefined;
   
   constructor(
     public musicShopService: MusicShopService,
     public dialog: MatDialog
-    ) {}
+    ) {
+      this.getConcerts();
+    }
 
-  public ngOnInit(): void {
-    this.getConcerts();
+
+  async removeConcert(concertId: any) {
+    await this.musicShopService.removeConcert(concertId).subscribe({ next: r =>  this.getConcerts()});
   }
 
-  public getConcerts() {
-    this.musicShopService.getConcerts()
-    .subscribe({
-        next: response => { this.concerts = response;},
-        error: error => console.log(error)
-    });
-  }
-
-  removeConcert(concertId: any) {
-    this.musicShopService.removeConcert(concertId).subscribe({ next: r => this.getConcerts()});
-  }
-
-  refreshConcerts(event: any) {
-    this.getConcerts();
+  async refreshConcerts(concerts: Observable<any>) {
+    this.concerts$ = await concerts;
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(ConcertFormComponent);
 
-    dialogRef.afterClosed().subscribe(result => {
-        this.getConcerts();
+    dialogRef.afterClosed().subscribe((result) => {
+      this.concerts$ = result.data;
     });
+  }
+
+  public async getConcerts() {
+    this.concerts$ = await this.musicShopService.getConcerts();
   }
 }

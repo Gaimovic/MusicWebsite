@@ -1,3 +1,3 @@
-<div *ngFor="let song of data.songs; let i = index">
-    {{ song.songName }}
-</div>
+<ul class="list-group" *ngFor="let song of data.songs; let i = index">
+    <li class="list-group-item">{{ i + 1}}: {{ song.songName }}</li>
+</ul>

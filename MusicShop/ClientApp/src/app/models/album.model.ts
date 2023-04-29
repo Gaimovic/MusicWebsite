@@ -51,8 +51,6 @@ export class AlbumForm extends FormGroup {
             email: new FormControl(null, { validators:  [Validators.required, Validators.email], updateOn: 'change'}),
             songs: new FormArray([])
         })
-
-       // this.controls.coverUrl.setValidators([Validators.required, this.urlValidator])
     }
 
 

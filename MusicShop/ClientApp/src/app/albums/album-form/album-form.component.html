@@ -1,4 +1,4 @@
-<div class="modal-body">
+<div class="form">
     <div class="row">
         <div class="col">
             <form [formGroup]="form"
@@ -9,7 +9,7 @@
                         <input 
                             id="form-author"
                             class="form-control"
-                            [class.is-invalid]="form.get('author')?.invalid"
+                            [class.is-invalid]="form.get('author')?.invalid && formWasSubmited"
                             type="text" 
                             formControlName="author"
                         >
@@ -26,7 +26,7 @@
                             type="text" 
                             formControlName="title"
                             class="form-control"
-                            [class.is-invalid]="form.get('title')?.invalid"
+                            [class.is-invalid]="form.get('title')?.invalid && formWasSubmited"
                             >
                          <div class="invalid-feedback">
                                 Title is required
@@ -37,14 +37,13 @@
                     <div class="mb-3">
                         <label for="form-description"
                             class="form-label">Description: </label>
-                        <input 
-                            id="form-description" 
-                            type="text" 
-                            formControlName="description"
-                            class="form-control"
-                            [class.is-invalid]="form.get('description')?.invalid"
-                            >
-        
+                            <textarea
+                                id="form-description" 
+                                type="text" 
+                                formControlName="description"
+                                class="form-control"
+                                [class.is-invalid]="form.get('description')?.invalid && formWasSubmited">
+                            </textarea>
                         <div class="invalid-feedback">
                                 Description is required
                         </div>
@@ -58,7 +57,7 @@
                             type="text" 
                             formControlName="coverUrl"
                             class="form-control"
-                            [class.is-invalid]="form.get('coverUrl')?.invalid"
+                            [class.is-invalid]="form.get('coverUrl')?.invalid && formWasSubmited"
                             >
         
                         <div class="invalid-feedback">
@@ -87,7 +86,7 @@
                             type="text" 
                             formControlName="email"
                             class="form-control"
-                            [class.is-invalid]="form.get('email')?.invalid"
+                            [class.is-invalid]="form.get('email')?.invalid && formWasSubmited"
                             >
                         <div class="invalid-feedback">
                             Email is required
@@ -104,7 +103,7 @@
                                     type="text" 
                                     [formControlName]="i"
                                     class="form-control"
-                                    [class.is-invalid]="song?.invalid"
+                                    [class.is-invalid]="song?.invalid && formWasSubmited"
                                     >
                                     <div class="invalid-feedback">
                                         Song name is required
@@ -122,7 +121,7 @@
     </div>    
 </div>
 
-<div class="modal-footer">
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" [disabled]="!form.valid" (click)="createAlbum()">Add New Album</button>
-</div>
+<mat-dialog-actions align="end">
+    <button mat-button class="btn btn-secondary" mat-dialog-close>Cancel</button>
+    <button mat-button class="btn btn-warning" (click)="createAlbum()" cdkFocusInitial>Add New Album</button>
+</mat-dialog-actions>

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MusicShopService } from '../shared/services/music-shop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SongComponent } from './album-songs/album-song.component';
+import { Observable } from 'rxjs';
+import { AlbumFormComponent } from './album-form/album-form.component';
 
 @Component({
   selector: 'albums',
@@ -10,6 +12,7 @@ import { SongComponent } from './album-songs/album-song.component';
 })
 export class AlbumComponent implements OnInit {
 
+  public albums$: Observable<any> | undefined;
   public albums: any = [];
   
   constructor(
@@ -22,6 +25,7 @@ export class AlbumComponent implements OnInit {
   }
 
   public getAlbums() {
+    this.albums$ = this.musicShopService.getAlbums();
     this.musicShopService.getAlbums()
     .subscribe({
         next: response => this.albums = response,
@@ -35,6 +39,14 @@ export class AlbumComponent implements OnInit {
 
   refreshAlbum(event: any) {
     this.getAlbums();
+  }
+
+  openCreateForm() {
+    var dialogRef = this.dialog.open(AlbumFormComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.getAlbums();
+    });
   }
 
   openDialog(album: any) {

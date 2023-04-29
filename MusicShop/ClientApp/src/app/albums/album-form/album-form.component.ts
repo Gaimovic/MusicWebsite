@@ -4,26 +4,25 @@ import { AlbumForm } from 'src/app/models/album.model';
 import { FormArray, FormControl, Validators } from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { getGenres } from '../album.component.mock';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'album-create-form',
   templateUrl: './album-form.component.html',
   styleUrls: ['./album-form.component.scss']
 })
-export class AlbumFormComponent implements OnInit {
-  @Output() public refresh = new EventEmitter<boolean>();
+export class AlbumFormComponent {
   public form: AlbumForm;
   public genres: any[];
+  public formWasSubmited: boolean = false;
 
   constructor(
+    private dialogRef: MatDialogRef<AlbumFormComponent>,
     public musicShopService: MusicShopService
     ) {
         this.form = new AlbumForm();
         this.genres = getGenres()
     }
-
-  public ngOnInit(): void {
-  }
 
   get getSongControls() {
     return (<FormArray>this.form.get('songs')).controls;
@@ -40,11 +39,15 @@ export class AlbumFormComponent implements OnInit {
   }
 
   createAlbum() {
+    this.formWasSubmited = true;
     var request = this.form.getRawValue();
     if(this.form.valid) {
         this.musicShopService.addNewAlbum(request)
         .subscribe({
-            next: response => this.refresh.emit(true),
+            next: response => { 
+              this.dialogRef.close({ data: response});
+              this.formWasSubmited = false;
+             },
             error: error => console.log(error)
         });
     }
