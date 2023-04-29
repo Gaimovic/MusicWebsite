@@ -267,14 +267,22 @@ namespace MusicShop.Infrastructure.Repositories
             await _musicShopContext.SaveChangesAsync();
         }
 
-        public async Task RemoveAlbum(Guid concertGuid)
+        public async Task RemoveAlbum(Guid albumGuid)
         {
             var itemToDelete = new AlbumEntity
             {
-                AlbumId = concertGuid
+                AlbumId = albumGuid
             };
 
+            var songsToRemove = await _musicShopContext
+                .Songs
+                .AsNoTracking()
+                .Where(x => x.AlbumId == albumGuid)
+                .ToListAsync();
+
             _musicShopContext.Albums.Remove(itemToDelete);
+            _musicShopContext.Songs.RemoveRange(songsToRemove);
+
             await _musicShopContext.SaveChangesAsync();
         }
 

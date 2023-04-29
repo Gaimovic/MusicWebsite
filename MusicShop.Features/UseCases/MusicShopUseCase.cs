@@ -110,7 +110,7 @@ namespace MusicShop.Features.UseCases
             var validator = new AddConcertRquestValidator();
             await validator.ValidateAndThrowAsync(request);
 
-            var author = await _musicShopRepository.GetAuthorByNameEmail(request.Author, request.Email);
+            var author = await _musicShopRepository.CreateAuthor(request.Author, request.Email);
             var concert = new Concert()
             {
                 AuthorId = author.AuthorId,
