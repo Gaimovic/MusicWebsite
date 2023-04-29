@@ -6,7 +6,6 @@ using MusicShop.Domain.Models.Concerts;
 using MusicShop.Domain.Models.Requests;
 using MusicShop.Features.Validators;
 using MusicShop.Infrastructure.Repositories;
-using System.ComponentModel.DataAnnotations;
 
 namespace MusicShop.Features.UseCases
 {
@@ -31,15 +30,23 @@ namespace MusicShop.Features.UseCases
     public class MusicShopUseCase : IMusicShopUseCase
     {
         private readonly IMusicShopRepository _musicShopRepository;
+        private readonly IAlbumRepository _albumRepository;
+        private readonly IConcertRepository _concertRepository;
 
         // TODO Add validations
-        public MusicShopUseCase(IMusicShopRepository musicShopRepository) {
+        public MusicShopUseCase(
+            IMusicShopRepository musicShopRepository,
+            IAlbumRepository albumRepository,
+            IConcertRepository concertRepository)
+        {
             _musicShopRepository = musicShopRepository;
+            _albumRepository = albumRepository;
+            _concertRepository = concertRepository;
         }
 
         public async Task<List<Album>> GetAllAlbums()
         {
-            return (await _musicShopRepository.GetAlbums()).ToList();
+            return (await _albumRepository.GetAlbums()).ToList();
         }
 
         public async Task<Guid> CreateUser(string name, string surname) {
@@ -75,32 +82,32 @@ namespace MusicShop.Features.UseCases
                 PortfolioId = portfolio.PortfolioId
             };
 
-            var albumId = await _musicShopRepository.AddAlbum(album);
+            var albumId = await _albumRepository.AddAlbum(album);
             var songsToCreate = request.Songs?.Where(x => x != null).Select(x => new Song() { SongName = x, AlbumId = albumId })
                 .ToList();
 
             if(songsToCreate != null && songsToCreate.Any())
-                await _musicShopRepository.AddSongList(songsToCreate);
+                await _albumRepository.AddSongList(songsToCreate);
 
             return albumId;
         }
 
         public async Task RemoveAlbum(Guid removeAlbumId)
         {
-            await _musicShopRepository.RemoveAlbum(removeAlbumId);
+            await _albumRepository.RemoveAlbum(removeAlbumId);
         }
 
         public async Task<List<Concert>> GetConcerts(string authorName)
         {
             var author = await _musicShopRepository.GetAuthor(authorName);
-            return (await _musicShopRepository
+            return (await _concertRepository
                 .GetAllConcertsByAuthorId(author.AuthorId))
                 .ToList();
         }
 
         public async Task<List<Concert>> GetConcerts()
         {
-            return (await _musicShopRepository
+            return (await _concertRepository
                 .GetAllConcerts())
                 .ToList();
         }
@@ -120,12 +127,12 @@ namespace MusicShop.Features.UseCases
                 ConcertDescription = request.ConcertDescription,
             };
 
-            return await _musicShopRepository.AddConcert(concert);
+            return await _concertRepository.AddConcert(concert);
         }
 
         public async Task RemoveConcert(Guid removeConcert)
         {
-             await _musicShopRepository.RemoveConcert(removeConcert);
+             await _concertRepository.RemoveConcert(removeConcert);
         }
 
         // Create Mock DB Record
@@ -153,7 +160,7 @@ namespace MusicShop.Features.UseCases
 
                 var cover = await _musicShopRepository.AddNewCover(new Cover() { Url = "https://indiater.com/wp-content/uploads/2021/06/Free-Music-Album-Cover-Art-Banner-Photoshop-Template.jpg" });
                 // Add Album
-                var albumId = await _musicShopRepository.AddAlbum(new Album() { 
+                var albumId = await _albumRepository.AddAlbum(new Album() { 
                     PortfolioId = portfolioId, 
                     Description = "My new test portfolio", 
                     AuthorId = author.AuthorId, 

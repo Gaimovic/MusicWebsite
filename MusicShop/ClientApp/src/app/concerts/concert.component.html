@@ -6,7 +6,7 @@
             </div>
             <div class="card-body">
               <h5 class="card-title">{{ concert.author.authorName }} <a href="mailto:{{concert.author.email}}">({{ concert.author.email }})</a></h5>
-              <textarea class="card-text" disabled>{{ concert.concertDescription }}</textarea>
+              <div class="card-text">{{ concert.concertDescription }}</div>
             </div>
             <div class="card-footer text-muted">
                 <a class="btn btn-secondary" (click)="removeConcert(concert.concertId)">Remove</a>

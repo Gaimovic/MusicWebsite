@@ -17,11 +17,17 @@ builder.Services.AddDbContext<MusicShopContext>(opt =>
 
 builder.Services.AddScoped<IMusicShopUseCase, MusicShopUseCase>();
 builder.Services.AddScoped<IMusicShopRepository, MusicShopRepository>();
+builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+builder.Services.AddScoped<IConcertRepository, ConcertRepository>();
 
 builder.Services.AddControllersWithViews();
 
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateScope();
+var musicShopContext = scope.ServiceProvider.GetRequiredService<MusicShopContext>(); ;
+musicShopContext.Database.EnsureCreated();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

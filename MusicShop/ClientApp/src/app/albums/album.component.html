@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-3" *ngFor="let album of (albums$ | async)" >
             <div class="card" style="width: 18rem;">
-                <img [src]="album.cover.url" class="card-img-top">
+                <img [src]="album.cover.url"  class="card-img-top">
                 <div class="card-body">
                   <h4 class="card-title">{{ album.title }}</h4>
                   <h5><a href="mailto:{{album.author.email}}">({{ album.author.email }})</a></h5>
@@ -28,16 +28,3 @@
         </div>
     </div> 
 </div>
-
-<!-- Modal -->
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="modalLabel">Create new album</h1>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <album-create-form (refresh)="refreshAlbum($event)"></album-create-form>
-    </div>
-  </div>
-</div> -->

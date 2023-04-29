@@ -19,23 +19,14 @@ namespace MusicShop.Infrastructure.Repositories
         Task<Author> GetAuthorByNameEmail(string name, string email);
         Task<Author> GetAuthorById(Guid authorId);
         Task<Author> GetAuthor(string authorName);
-        Task<IEnumerable<Album>> GetAlbums();
-        Task<Album> GetAlbum(string albumTitle);
-        Task<IEnumerable<Concert>> GetAllConcertsByAuthorId(Guid authorId);
-        Task<IEnumerable<Concert>> GetAllConcerts();
 
         Task<Guid> AddNewUser(string userName, string userSurname);
         Task<Author> CreateAuthor(string authorName, string email);
         Task<Guid> AddNewPortfolio(Portfolio portfolio);
         Task<Genre> AddNewGenre(Genre genre);
         Task<Guid> AddNewSong(Song song);
-        Task<Guid> AddAlbum(Album album);
-        Task<Guid> AddConcert(Concert concert);
         Task<Cover> AddNewCover(Cover cover);
         Task<List<Guid>> AddSongList(List<Song> songs);
-
-        Task RemoveConcert(Guid concertGuid);
-        Task RemoveAlbum(Guid concertGuid);
         Task RemoveCover(Guid coverId);
     }
 
@@ -86,55 +77,30 @@ namespace MusicShop.Infrastructure.Repositories
             return _mapper.Map<Author>(author);
         }
 
-        public async Task<IEnumerable<Album>> GetAlbums()
-        {
-            var albums = await _musicShopContext
-                .Albums
-                .Include(x => x.Songs)
-                .Include(x => x.Cover)
-                .Include(x => x.Author)
-                .AsNoTracking()
-                .ToListAsync();
-
-            return albums
-                .Select(x => _mapper.Map<Album>(x));
-        }
-
         public async Task<IEnumerable<Concert>> GetAllConcertsByAuthorId(Guid authorId)
         {
-            var albums = await _musicShopContext
+            var concerts = await _musicShopContext
                 .Concerts
                 .Include(x => x.Author)
                 .AsNoTracking()
                 .Where(x => x.AuthorId == authorId)
                 .ToListAsync();
 
-            return albums
+            return concerts
                 .Select(x => _mapper.Map<Concert>(x));
         }
 
         public async Task<IEnumerable<Concert>> GetAllConcerts()
         {
-            var albums = await _musicShopContext
+            var concerts = await _musicShopContext
                 .Concerts
                 .Include(x => x.Author)
                 .AsNoTracking()
                 .OrderByDescending(x => x.ConcertStartDate)
                 .ToListAsync();
 
-            return albums
+            return concerts
                 .Select(x => _mapper.Map<Concert>(x));
-        }
-
-        public async Task<Album> GetAlbum(string albumTitle)
-        {
-            var album = await _musicShopContext
-                .Albums
-                .Include(x => x.Songs)
-                .AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Title == albumTitle);
-
-            return _mapper.Map<Album>(album);
         }
 
         public async Task<User> GetUserByNameAndSurname(string userName, string userSurname)
@@ -234,56 +200,6 @@ namespace MusicShop.Infrastructure.Repositories
             await _musicShopContext.SaveChangesAsync();
 
             return entities.Select(x => x.SongId).ToList();
-        }
-
-        public async Task<Guid> AddAlbum(Album album)
-        {
-            var entity = _mapper.Map<AlbumEntity>(album);
-
-            await _musicShopContext.AddAsync(entity);
-            await _musicShopContext.SaveChangesAsync();
-
-            return entity.AlbumId;
-        }
-
-        public async Task<Guid> AddConcert(Concert concert)
-        {
-            var entity = _mapper.Map<ConcertEntity>(concert);
-
-            await _musicShopContext.AddAsync(entity);
-            await _musicShopContext.SaveChangesAsync();
-
-            return entity.ConcertId;
-        }
-
-        public async Task RemoveConcert(Guid concertGuid)
-        {
-            var itemToDelete = new ConcertEntity
-            {
-                ConcertId = concertGuid
-            };
-
-            _musicShopContext.Concerts.Remove(itemToDelete);
-            await _musicShopContext.SaveChangesAsync();
-        }
-
-        public async Task RemoveAlbum(Guid albumGuid)
-        {
-            var itemToDelete = new AlbumEntity
-            {
-                AlbumId = albumGuid
-            };
-
-            var songsToRemove = await _musicShopContext
-                .Songs
-                .AsNoTracking()
-                .Where(x => x.AlbumId == albumGuid)
-                .ToListAsync();
-
-            _musicShopContext.Albums.Remove(itemToDelete);
-            _musicShopContext.Songs.RemoveRange(songsToRemove);
-
-            await _musicShopContext.SaveChangesAsync();
         }
 
         public async Task RemoveCover(Guid coverId)
